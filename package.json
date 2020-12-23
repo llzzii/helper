@@ -1,0 +1,166 @@
+{
+  "name": "icb-helper",
+  "version": "1.0.0",
+  "author": "inspur",
+  "description": "icb-helper",
+  "license": "MIT",
+  "main": "./dist/electron/main.js",
+  "scripts": {
+    "dev": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/dev-runner.js",
+    "build": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/build.js && electron-builder",
+    "build:win32": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/build.js && electron-builder --win  --ia32",
+    "build:win64": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/build.js && electron-builder --win  --x64",
+    "build:mac": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/build.js && electron-builder --mac",
+    "build:dir": "cross-env BUILD_TARGET=clean node .electron-vue/build.js && node .electron-vue/build.js && electron-builder --dir",
+    "build:clean": "cross-env BUILD_TARGET=clean node .electron-vue/build.js",
+    "build:web": "cross-env BUILD_TARGET=web node .electron-vue/build.js",
+    "pack": "npm run pack:main && npm run pack:renderer",
+    "pack:main": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.main.config.js",
+    "pack:renderer": "cross-env NODE_ENV=production webpack --progress --colors --config .electron-vue/webpack.renderer.config.js",
+    "update:serve": "node server/index.js"
+  },
+  "build": {
+    "extraFiles": [],
+    "publish": [
+      {
+        "provider": "generic",
+        "url": "http://127.0.0.1"
+      }
+    ],
+    "asar": false,
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "build/icons/icon256.ico",
+      "uninstallerIcon": "build/icons/icon256.ico",
+      "installerHeaderIcon": "build/icons/icon256.ico",
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "icb"
+    },
+    "productName": "icb-helper",
+    "appId": "icb",
+    "directories": {
+      "output": "build"
+    },
+    "files": [
+      "dist/electron/**/*"
+    ],
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "build/icons/icon.icns"
+    },
+    "win": {
+      "icon": "build/icons/icon256.ico",
+      "target": [
+        {
+          "target": "nsis"
+        }
+      ]
+    },
+    "linux": {
+      "icon": "build/icons"
+    }
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "electron-store": "^6.0.1",
+    "element-ui": "^2.13.2",
+    "express": "^4.17.1",
+    "fs-extra": "^9.0.1",
+    "vue": "^2.6.11",
+    "vue-router": "^3.4.6",
+    "xterm-addon-fit": "^0.3.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.11.6",
+    "@babel/plugin-proposal-class-properties": "^7.10.4",
+    "@babel/plugin-proposal-decorators": "^7.10.5",
+    "@babel/plugin-proposal-do-expressions": "^7.10.4",
+    "@babel/plugin-proposal-export-default-from": "^7.10.4",
+    "@babel/plugin-proposal-export-namespace-from": "^7.10.4",
+    "@babel/plugin-proposal-function-bind": "^7.10.5",
+    "@babel/plugin-proposal-function-sent": "^7.10.4",
+    "@babel/plugin-proposal-json-strings": "^7.10.4",
+    "@babel/plugin-proposal-logical-assignment-operators": "^7.11.0",
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.10.4",
+    "@babel/plugin-proposal-numeric-separator": "^7.10.4",
+    "@babel/plugin-proposal-optional-chaining": "^7.11.0",
+    "@babel/plugin-proposal-pipeline-operator": "^7.10.5",
+    "@babel/plugin-proposal-throw-expressions": "^7.10.4",
+    "@babel/plugin-syntax-dynamic-import": "^7.8.3",
+    "@babel/plugin-syntax-import-meta": "^7.10.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/polyfill": "^7.10.4",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/register": "^7.10.5",
+    "@babel/runtime": "^7.11.2",
+    "ajv": "^6.12.6",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.1.0",
+    "babel-minify-webpack-plugin": "^0.3.1",
+    "body-parser": "^1.19.0",
+    "cache-loader": "^4.1.0",
+    "cfonts": "^2.8.6",
+    "chalk": "^4.1.0",
+    "compressing": "^1.5.0",
+    "copy-webpack-plugin": "^6.2.1",
+    "cross-env": "^7.0.2",
+    "css-loader": "^3.6.0",
+    "del": "^6.0.0",
+    "electron": "^8.5.2",
+    "electron-builder": "^22.8.1",
+    "electron-devtools-installer": "^3.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-friendly-formatter": "^4.0.1",
+    "eslint-loader": "^3.0.4",
+    "eslint-plugin-html": "^6.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-node": "^9.2.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "file-loader": "^6.1.1",
+    "guacamole-common-js-jumpserver": "^1.1.0-c",
+    "happypack": "^5.0.1",
+    "hard-source-webpack-plugin": "^0.13.1",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "0.11.2",
+    "multispinner": "^0.2.1",
+    "node-loader": "^1.0.2",
+    "portfinder": "^1.0.28",
+    "sass": "^1.27.0",
+    "sass-loader": "^10.0.3",
+    "split2": "^3.2.1",
+    "style-loader": "^1.3.0",
+    "svg-sprite-loader": "^5.0.0",
+    "terser-webpack-plugin": "^4.2.3",
+    "through2-filter": "^3.0.0",
+    "url-loader": "^4.1.1",
+    "vue-html-loader": "^1.2.4",
+    "vue-loader": "^15.9.3",
+    "vue-style-loader": "^4.1.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-merge": "^5.2.0",
+    "xterm": "^4.4.0"
+  }
+}
