@@ -3,7 +3,7 @@ import path from 'path'
 
 let mainWindow = null
 let appTray = null // 托盘实例
-
+// let canQuit = false
 // 隐藏主窗口，并创建托盘
 function setTray() {
   // 当托盘最小化时，右击有一个菜单显示，这里进设置一个退出的菜单
@@ -20,6 +20,7 @@ function setTray() {
       label: '退出',
       click: function() {
         app.quit() // 点击之后退出应用
+        app.quit() // 点击之后退出应用
       },
     },
   ]
@@ -28,7 +29,7 @@ function setTray() {
     process.env.NODE_ENV === 'development'
       ? path.join(__dirname, '../../../static/icon.ico')
       : path.join(__dirname, '/static/icon.ico').replace(/\\/g, '\\\\')
-  console.log(iconPath)
+  //   console.log(iconPath)
   appTray = new Tray(iconPath)
   // 图标的上下文菜单
   const contextMenu = Menu.buildFromTemplate(trayMenuTemplate)
@@ -55,6 +56,7 @@ ipcMain.on('open-tray', () => {
 
 function setTrays(main) {
   mainWindow = main
+  //   canQuit = canQuits
   setTray()
 }
 export default setTrays

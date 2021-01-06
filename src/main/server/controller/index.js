@@ -2,6 +2,7 @@ const fs = require('fs')
 const Store = require('electron-store')
 const exec = require('child_process').exec
 const path = require('path')
+const atob = require('atob')
 
 /**
  * @description 获取工具配置
@@ -53,7 +54,7 @@ export const openTool = (req, res) => {
       newData['host']
     }:${newData['port']} -newtab icb`
   }
-  if (req.body['toolType'] === 'puTTY') {
+  if (req.body['toolType'] === 'putty') {
     cmdStr = `cmd /c "${setting['puTTYClientPath']}" putty -ssh ${newData['user']}@${newData['host']} -P ${newData['port']}  ${
       pwd && pwd !== '' ? '-pw ' + pwd : ''
     }`

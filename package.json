@@ -27,7 +27,7 @@
         "url": "http://127.0.0.1"
       }
     ],
-    "asar": false,
+    "asar": true,
     "nsis": {
       "oneClick": false,
       "allowElevation": true,
@@ -37,7 +37,8 @@
       "installerHeaderIcon": "build/icons/icon256.ico",
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
-      "shortcutName": "icb"
+      "shortcutName": "icb",
+      "include": "build/script/incluede.nsh"
     },
     "productName": "icb-helper",
     "appId": "icb",
@@ -78,6 +79,7 @@
     }
   },
   "dependencies": {
+    "atob": "^2.1.2",
     "axios": "^0.19.2",
     "electron-store": "^6.0.1",
     "element-ui": "^2.13.2",

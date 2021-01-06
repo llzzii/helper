@@ -14,8 +14,7 @@ yarn-error.log*
 *.ntvs*
 *.njsproj
 *.sln
-electron-vue-template-ts.7z
-server/client/electron-vue-admin Setup 0.0.1.exe
+
 build/icb-helper Setup 1.0.0.exe.blockmap
 build/icb-helper32.exe
 build/builder-effective-config.yaml

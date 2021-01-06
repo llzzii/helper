@@ -1,4 +1,4 @@
-import { app, BrowserWindow, Menu, dialog } from 'electron'
+import { app, BrowserWindow, nativeImage, globalShortcut, Menu, dialog } from 'electron'
 // import menuconfig from '../config/menu'
 import config from '@config'
 import setIpc from './ipcMain'
@@ -20,8 +20,13 @@ if (process.env.NODE_ENV !== 'development') {
 const winURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}` : `file://${__dirname}/index.html`
 const loadingURL =
   process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}/static/loader.html` : `file://${__static}/loader.html`
+const iconPath =
+  process.env.NODE_ENV === 'development'
+    ? path.join(__dirname, '../../../build/icons/256x256.png')
+    : path.join(__dirname, '/build/icons/256x256.png').replace(/\\/g, '\\\\')
 var loadWindow = null
 var mainWindow = null
+let canQuit = false
 const menu = [
   {
     label: '工具',
@@ -30,7 +35,8 @@ const menu = [
         label: '配置',
         role: 'setting',
         click: function() {
-          mainWindow.loadURL(winURL + '#/')
+          //   mainWindow.loadURL(winURL + '#/')
+          sendMenuEvent({ route: '/' })
         },
       },
     ],
@@ -42,7 +48,8 @@ const menu = [
         label: '离线播放',
         role: 'player',
         click: function() {
-          mainWindow.loadURL(winURL + '#/mainPage')
+          //   mainWindow.loadURL(winURL + '#/mainPage')
+          sendMenuEvent({ route: '/mainPage' })
         },
       },
     ],
@@ -67,21 +74,24 @@ const menu = [
     submenu: [
       {
         label: '关于',
-        role: 'about',
         click: function() {
-          dialog.showMessageBox({
-            title: '关于',
-            type: 'info',
-            message: 'icb-helper',
-            detail: `版本信息：1.0.0\n引擎版本：${process.versions.v8}\n当前系统：${os.type()} ${os.arch()} ${os.release()}`,
-            noLink: true,
-            buttons: ['确定'],
+          sendOpenDialog({
+            version: '1.0.0',
+            // type: 'info',
+            yin: process.versions.v8,
+            os: os,
           })
         },
       },
     ],
   },
 ]
+const sendMenuEvent = async (data) => {
+  mainWindow.webContents.send('change-view', data)
+}
+const sendOpenDialog = async (data) => {
+  mainWindow.webContents.send('open-dialog', data)
+}
 
 function createMainWindow() {
   /**
@@ -142,10 +152,19 @@ function createMainWindow() {
     .catch((err) => {
       console.log('错误', err)
     })
+
+  mainWindow.on('close', (e) => {
+    //回收BrowserWindow对象
+    if (mainWindow.isMinimized()) {
+      mainWindow = null
+    } else {
+      e.preventDefault()
+      mainWindow.minimize()
+    }
+  })
   mainWindow.on('closed', () => {
     mainWindow = null
   })
-
   setTrays(mainWindow)
 }
 
@@ -156,7 +175,7 @@ function loadindWindow() {
     frame: false,
     backgroundColor: '#222',
     transparent: true,
-    skipTaskbar: true,
+    // skipTaskbar: true,
     resizable: false,
     webPreferences: { experimentalFeatures: true },
   })
@@ -168,17 +187,26 @@ function loadindWindow() {
   setTimeout(() => {
     createMainWindow()
   }, 2000)
-
+  loadWindow.on('close', (e) => {
+    //回收BrowserWindow对象
+    if (mainWindow.isMinimized()) {
+      mainWindow = null
+    } else {
+      e.preventDefault()
+      mainWindow.minimize()
+    }
+  })
   loadWindow.on('closed', () => {
     loadWindow = null
   })
 }
 
-function initWindow() {
+export function initWindow() {
   if (config.UseStartupChart) {
     return loadindWindow()
   } else {
     return createMainWindow()
   }
 }
+
 export default initWindow
