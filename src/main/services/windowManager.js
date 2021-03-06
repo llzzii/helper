@@ -152,10 +152,11 @@ function createMainWindow() {
     .catch((err) => {
       console.log('错误', err)
     })
+  const gotTheLock = app.requestSingleInstanceLock()
 
   mainWindow.on('close', (e) => {
     //回收BrowserWindow对象
-    if (mainWindow.isMinimized()) {
+    if (mainWindow.isMinimized() || !gotTheLock) {
       mainWindow = null
     } else {
       e.preventDefault()
@@ -166,6 +167,20 @@ function createMainWindow() {
     mainWindow = null
   })
   setTrays(mainWindow)
+  //   限制只能开启一个应用(4.0以上版本)
+
+  if (!gotTheLock) {
+    app.quit()
+  } else {
+    app.on('second-instance', (event, commandLine, workingDirectory) => {
+      // 当运行第二个实例时,将会聚焦到mainWindow这个窗口
+      if (mainWindow) {
+        if (mainWindow.isMinimized()) mainWindow.restore()
+        mainWindow.focus()
+        mainWindow.show()
+      }
+    })
+  }
 }
 
 function loadindWindow() {

@@ -55,7 +55,7 @@ export const openTool = (req, res) => {
     }:${newData['port']} -newtab icb`
   }
   if (req.body['toolType'] === 'putty') {
-    cmdStr = `cmd /c "${setting['puTTYClientPath']}" putty -ssh ${newData['user']}@${newData['host']} -P ${newData['port']}  ${
+    cmdStr = `cmd /c "${setting['puTTYClientPath']}" -ssh ${newData['user']}@${newData['host']} -P ${newData['port']}  ${
       pwd && pwd !== '' ? '-pw ' + pwd : ''
     }`
   }

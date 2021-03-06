@@ -18,3 +18,7 @@ yarn-error.log*
 build/icb-helper Setup 1.0.0.exe.blockmap
 build/icb-helper32.exe
 build/builder-effective-config.yaml
+build/icb-helper Setup 1.0.0.exe
+build/icb-helper Setup 1.0.0.exe
+build/latest.yml
+build/icb-helper Setup 1.0.0.exe
