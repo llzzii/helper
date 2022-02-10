@@ -18,15 +18,12 @@ if (process.env.NODE_ENV !== 'development') {
 }
 // 将文件地址挪到这里
 const winURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}` : `file://${__dirname}/index.html`
-const loadingURL =
-  process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}/static/loader.html` : `file://${__static}/loader.html`
+const loadingURL = process.env.NODE_ENV === 'development' ? `http://localhost:${process.env.PORT}/static/loader.html` : `file://${__static}/loader.html`
 const iconPath =
-  process.env.NODE_ENV === 'development'
-    ? path.join(__dirname, '../../../build/icons/256x256.png')
-    : path.join(__dirname, '/build/icons/256x256.png').replace(/\\/g, '\\\\')
+  process.env.NODE_ENV === 'development' ? path.join(__dirname, '../../../build/icons/256x256.png') : path.join(__dirname, '/build/icons/256x256.png').replace(/\\/g, '\\\\')
 var loadWindow = null
 var mainWindow = null
-let canQuit = false
+const canQuit = false
 const menu = [
   {
     label: '工具',
@@ -34,12 +31,12 @@ const menu = [
       {
         label: '配置',
         role: 'setting',
-        click: function() {
+        click: function () {
           //   mainWindow.loadURL(winURL + '#/')
           sendMenuEvent({ route: '/' })
-        },
-      },
-    ],
+        }
+      }
+    ]
   },
   {
     label: '播放',
@@ -47,12 +44,12 @@ const menu = [
       {
         label: '离线播放',
         role: 'player',
-        click: function() {
+        click: function () {
           //   mainWindow.loadURL(winURL + '#/mainPage')
           sendMenuEvent({ route: '/mainPage' })
-        },
-      },
-    ],
+        }
+      }
+    ]
   },
   {
     label: '设置',
@@ -60,31 +57,31 @@ const menu = [
       {
         label: '快速重启',
         accelerator: 'F5',
-        role: 'reload',
+        role: 'reload'
       },
       {
         label: '退出',
         accelerator: 'CmdOrCtrl+F4',
-        role: 'close',
-      },
-    ],
+        role: 'close'
+      }
+    ]
   },
   {
     label: '帮助',
     submenu: [
       {
         label: '关于',
-        click: function() {
+        click: function () {
           sendOpenDialog({
             version: '1.0.0',
             // type: 'info',
             yin: process.versions.v8,
-            os: os,
+            os: os
           })
-        },
-      },
-    ],
-  },
+        }
+      }
+    ]
+  }
 ]
 const sendMenuEvent = async (data) => {
   mainWindow.webContents.send('change-view', data)
@@ -93,7 +90,7 @@ const sendOpenDialog = async (data) => {
   mainWindow.webContents.send('open-dialog', data)
 }
 
-function createMainWindow() {
+function createMainWindow () {
   /**
    * Initial window options
    */
@@ -113,8 +110,8 @@ function createMainWindow() {
       // 如果是开发模式可以使用devTools
       devTools: process.env.NODE_ENV === 'development',
       // 在macos中启用橡皮动画
-      scrollBounce: process.platform === 'darwin',
-    },
+      scrollBounce: process.platform === 'darwin'
+    }
   })
   // 这里设置只有开发环境才注入显示开发者模式
   if (process.env.NODE_ENV === 'development') {
@@ -124,9 +121,9 @@ function createMainWindow() {
         {
           label: '切换到开发者模式',
           accelerator: 'CmdOrCtrl+I',
-          role: 'toggledevtools',
-        },
-      ],
+          role: 'toggledevtools'
+        }
+      ]
     })
   }
   // 载入菜单
@@ -155,7 +152,7 @@ function createMainWindow() {
   const gotTheLock = app.requestSingleInstanceLock()
 
   mainWindow.on('close', (e) => {
-    //回收BrowserWindow对象
+    // 回收BrowserWindow对象
     if (mainWindow.isMinimized() || !gotTheLock) {
       mainWindow = null
     } else {
@@ -183,16 +180,16 @@ function createMainWindow() {
   }
 }
 
-function loadindWindow() {
+function loadindWindow () {
   loadWindow = new BrowserWindow({
     width: 400,
     height: 600,
     frame: false,
     backgroundColor: '#222',
     transparent: true,
-    // skipTaskbar: true,
+    skipTaskbar: true,
     resizable: false,
-    webPreferences: { experimentalFeatures: true },
+    webPreferences: { experimentalFeatures: true }
   })
 
   loadWindow.loadURL(loadingURL)
@@ -203,20 +200,25 @@ function loadindWindow() {
     createMainWindow()
   }, 2000)
   loadWindow.on('close', (e) => {
-    //回收BrowserWindow对象
+    // 回收BrowserWindow对象
     if (mainWindow.isMinimized()) {
       mainWindow = null
     } else {
       e.preventDefault()
-      mainWindow.minimize()
+      console.log('close')
+
+      mainWindow.setSkipTaskbar(true)
+      mainWindow.hide()
+      //   mainWindow.minimize()
     }
   })
   loadWindow.on('closed', () => {
+    console.log('closed')
     loadWindow = null
   })
 }
 
-export function initWindow() {
+export function initWindow () {
   if (config.UseStartupChart) {
     return loadindWindow()
   } else {

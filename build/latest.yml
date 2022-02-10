@@ -1,8 +1,8 @@
-version: 1.0.0
+version: 1.1.0
 files:
-  - url: icb-helper Setup 1.0.0.exe
-    sha512: l7Wmfgj5GNvSKeiBmDap1RgYZYZ42gNvCMSQ7SVa16+pb8fOwTaOT8gPK3Mk7w1+m+StjW2awdUlhoS3Q0z8xg==
-    size: 52835142
-path: icb-helper Setup 1.0.0.exe
-sha512: l7Wmfgj5GNvSKeiBmDap1RgYZYZ42gNvCMSQ7SVa16+pb8fOwTaOT8gPK3Mk7w1+m+StjW2awdUlhoS3Q0z8xg==
-releaseDate: '2021-01-05T11:34:22.579Z'
+  - url: icb-helper Setup 1.1.0.exe
+    sha512: VjFFjPs+gE8LoFx1pt0ag3G6R+975IVUWUvpjTilg6e6+gXFzoBISiaA1SgoTgThu/qE0dPjqwbNXuNOaV/rZQ==
+    size: 51096377
+path: icb-helper Setup 1.1.0.exe
+sha512: VjFFjPs+gE8LoFx1pt0ag3G6R+975IVUWUvpjTilg6e6+gXFzoBISiaA1SgoTgThu/qE0dPjqwbNXuNOaV/rZQ==
+releaseDate: '2022-01-26T06:17:32.294Z'
